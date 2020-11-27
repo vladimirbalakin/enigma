@@ -55,7 +55,13 @@ int main() {
     //cout << "done";
     for (char h : input) {
         for (int i = 0; i < rotors.size(); i++) {
-            
+            h = rotors[i].decode(h - 'A');
+            if (rotors[i].needToTurnNexRotor) {
+                rotors[i].needToTurnNexRotor = false;
+                if (i < rotors.size() - 1) {
+                    rotors[i+1].shift++;
+                }
+            }
         }
     }
     return 0;
