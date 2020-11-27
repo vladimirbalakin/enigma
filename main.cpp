@@ -30,6 +30,12 @@ struct reflector {
     string cipher = "FVPJIAOYEDRZXWGCTKUQSBNMHL", normal = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     char update = 'C';
     reflector() {}
+    int decode(int h) {
+        if (h > 25) {
+            h %= 26;
+        }
+        return int(cipher[h]) - int('A');
+    }
 };
 
 vector<rotor> rotors;
@@ -62,7 +68,25 @@ int main() {
                     rotors[i+1].shift++;
                 }
             }
+            if (i == 0) {
+                rotors[i].shift++;
+            }
         }
+        h = refl.decode(h - 'A');
+        for (int i = rotors.size()-1; i > -1; i--) {
+            h = rotors[i].decode(h - 'A');
+            if (rotors[i].needToTurnNexRotor) {
+                rotors[i].needToTurnNexRotor = false;
+                if (i < rotors.size() - 1) {
+                    rotors[i+1].shift++;
+                }
+            }
+            if (i == 0) {
+                rotors[i].shift++;
+            }
+        }
+        cout << h;
     }
+    cout << '\n';
     return 0;
 }
