@@ -22,7 +22,15 @@ struct rotor {
             needToTurnNexRotor = true;
             h %= 26;
         }
-        return int(cipher[h]) - int('A');
+        return int(cipher[h]);
+    }
+    int encode(int h) {
+        h -= shift;
+        if (h > 25) {
+            needToTurnNexRotor = true;
+            h %= 26;
+        }
+        return int(normal[h]);
     }
 };
 
@@ -34,7 +42,7 @@ struct reflector {
         if (h > 25) {
             h %= 26;
         }
-        return int(cipher[h]) - int('A');
+        return int(cipher[h]);
     }
 };
 
@@ -53,10 +61,11 @@ int main() {
     }
     cout << "Used reflector " << refl.update << '\n';
     for (int i = 0; i < rotors.size(); i++) {
-        cout << "Used rotor" << i+1 << " Date Introduced: " << rotors[i].update << '\n';
+        cout << "Used rotor" << i+1 << "; Date Introduced: " << rotors[i].update << '\n';
     }
     freopen("enigma.txt", "a+", stdout);
     cin >> input;
+    cout << '\n';
     //cout << input;
     //cout << "done";
     for (char h : input) {
@@ -65,28 +74,28 @@ int main() {
             if (rotors[i].needToTurnNexRotor) {
                 rotors[i].needToTurnNexRotor = false;
                 if (i < rotors.size() - 1) {
-                    rotors[i+1].shift++;
+                    //rotors[i+1].shift++;
                 }
             }
             if (i == 0) {
-                rotors[i].shift++;
+                //rotors[i].shift++;
             }
         }
         h = refl.decode(h - 'A');
         for (int i = rotors.size()-1; i > -1; i--) {
-            h = rotors[i].decode(h - 'A');
+            h = rotors[i].encode(h - 'A');
             if (rotors[i].needToTurnNexRotor) {
                 rotors[i].needToTurnNexRotor = false;
                 if (i < rotors.size() - 1) {
-                    rotors[i+1].shift++;
+                    //rotors[i+1].shift++;
                 }
             }
             if (i == 0) {
-                rotors[i].shift++;
+                //rotors[i].shift++;
             }
         }
         cout << h;
     }
-    cout << '\n';
+    //cout << '\n';
     return 0;
 }
