@@ -74,11 +74,11 @@ int main() {
             if (rotors[i].needToTurnNexRotor) {
                 rotors[i].needToTurnNexRotor = false;
                 if (i < rotors.size() - 1) {
-                    //rotors[i+1].shift++;
+                    rotors[i+1].shift++;
                 }
             }
             if (i == 0) {
-                //rotors[i].shift++;
+                rotors[i].shift++;
             }
         }
         h = refl.decode(h - 'A');
@@ -87,11 +87,11 @@ int main() {
             if (rotors[i].needToTurnNexRotor) {
                 rotors[i].needToTurnNexRotor = false;
                 if (i < rotors.size() - 1) {
-                    //rotors[i+1].shift++;
+                    rotors[i+1].shift++;
                 }
             }
             if (i == 0) {
-                //rotors[i].shift++;
+                rotors[i].shift++;
             }
         }
         cout << h;

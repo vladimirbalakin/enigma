@@ -1,0 +1,4 @@
+Used reflector C
+Used rotor1; Date Introduced: 7 February 1941
+Used rotor2; Date Introduced: 7 February 1941
+Used rotor3; Date Introduced: 7 February 1941
