@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#include <locale>
 
 typedef long long ll;
 typedef long double ld;
@@ -8,7 +9,7 @@ typedef std::vector<char> vechar;
 using namespace std;
 
 struct rotor {
-    string cipher = "JGDQOXUSCAMIFRVTPNEWKBLZYH", normal = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    string cipher = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"/*JGDQOXUSCAMIFRVTPNEWKBLZYH*/, normal = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     int shift = 0;
     bool needToTurnNexRotor = false;
     string update = "7 February 1941";
@@ -22,6 +23,7 @@ struct rotor {
             needToTurnNexRotor = true;
             h %= 26;
         }
+        h %= 26;
         return int(cipher[h]);
     }
     int encode(int h) {
@@ -30,7 +32,10 @@ struct rotor {
             needToTurnNexRotor = true;
             h %= 26;
         }
-        return int(normal[h]);
+        if (h < 0) {
+          h += normal.size();
+        }
+        return int(cipher[h]);
     }
 };
 
@@ -52,49 +57,50 @@ reflector refl;
 string input;
 
 int main() {
+    locale loc;
     freopen("enigma.txt", "r", stdin);
     freopen("enigmaOut.txt", "w", stdout);
     rotors.resize(3);
-    keys = {"JGDQOXUSCAMIFRVTPNEWKBLZYH", "NTZPSFBOKMWRCJDIVLAEYUXHGQ", "JVIUBHTCDYAKEQZPOSGXNRMWFL"};
+    /* keys = {"DMTWSILRUYQNKFEJCAZBPGXOHV", "HQZGPJTMOBLNCIFDYAWVEUSRKX", "UQNTLSZFMREHDPXKIBVYGJCWOA"};
     for (int i = 0; i < rotors.size(); i++) {
         rotors[i].cipher = keys[i];
-    }
+    }*/
     cout << "Used reflector " << refl.update << '\n';
     for (int i = 0; i < rotors.size(); i++) {
         cout << "Used rotor" << i+1 << "; Date Introduced: " << rotors[i].update << '\n';
     }
     freopen("enigma.txt", "a+", stdout);
     cin >> input;
-    cout << '\n';
+    for (int i = 0; i < input.size(); i++) {
+      input[i] = toupper(input[i], loc);
+    }
     //cout << input;
     //cout << "done";
     for (char h : input) {
-        for (int i = 0; i < rotors.size(); i++) {
-            h = rotors[i].decode(h - 'A');
-            if (rotors[i].needToTurnNexRotor) {
-                rotors[i].needToTurnNexRotor = false;
-                if (i < rotors.size() - 1) {
-                    rotors[i+1].shift++;
-                }
-            }
-            if (i == 0) {
-                rotors[i].shift++;
-            }
-        }
-        h = refl.decode(h - 'A');
-        for (int i = rotors.size()-1; i > -1; i--) {
-            h = rotors[i].encode(h - 'A');
-            if (rotors[i].needToTurnNexRotor) {
-                rotors[i].needToTurnNexRotor = false;
-                if (i < rotors.size() - 1) {
-                    rotors[i+1].shift++;
-                }
-            }
-            if (i == 0) {
-                rotors[i].shift++;
-            }
-        }
+      /* if (rotors[i].needToTurnNexRotor) {
+          rotors[i].needToTurnNexRotor = false;
+          if (i < rotors.size() - 1) {
+              rotors[i+1].shift++;
+          }
+      }*/
+      if (!('A' <= h && 'Z' >= h)) {
         cout << h;
+        continue;
+      }
+      rotors[0].shift++;
+      for (int i = 0; i < rotors.size(); i++) {
+          // cout << h << ' ';
+          h = rotors[i].decode(h - 'A');
+      }
+      // cout << h << ' ';
+      h = refl.decode(h - 'A');
+      for (int i = rotors.size()-1; i > -1; i--) {
+          // cout << h << ' ';
+          h = rotors[i].encode(h - 'A');
+      }
+      // cout << " ";
+      cout << h;
+        // cout << '\n';
     }
     //cout << '\n';
     return 0;
