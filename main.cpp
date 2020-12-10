@@ -71,7 +71,8 @@ int main() {
         cout << "Used rotor" << i+1 << "; Date Introduced: " << rotors[i].update << '\n';
     }
     freopen("enigma.txt", "a+", stdout);
-    cin >> input;
+    // cin >> input;
+    getline(cin, input);
     for (int i = 0; i < input.size(); i++) {
       input[i] = toupper(input[i], loc);
     }
