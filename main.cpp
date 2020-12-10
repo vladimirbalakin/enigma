@@ -58,6 +58,7 @@ string input;
 
 int main() {
     locale loc;
+    freopen("enigma.txt", "a+", stdout);
     freopen("enigma.txt", "r", stdin);
     freopen("enigmaOut.txt", "w", stdout);
     rotors.resize(3);
