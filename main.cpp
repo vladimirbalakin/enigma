@@ -51,10 +51,19 @@ struct reflector {
     }
 };
 
+struct plugboard {
+  string normal = "ABCDEFGHIJKLMNOPQRSTUVWXYZ", cipher = "QBCDEFGHIJKLMNOPARSTUVWXYZ";
+  plugboard() {}
+  int decode(int h) {
+    return cipher[h - 'A'];
+  }
+};
+
 vector<rotor> rotors;
 vector<string> keys;
 reflector refl;
 string input;
+plugboard plug;
 
 int main() {
     locale loc;
@@ -89,6 +98,7 @@ int main() {
         cout << h;
         continue;
       }
+      h = plug.decode(h);
       rotors[0].shift++;
       for (int i = 0; i < rotors.size(); i++) {
           // cout << h << ' ';
@@ -101,6 +111,7 @@ int main() {
           h = rotors[i].encode(h - 'A');
       }
       // cout << " ";
+      h = plug.decode(h);
       cout << h;
         // cout << '\n';
     }
